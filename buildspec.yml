@@ -6,44 +6,38 @@ phases:
     runtime-versions:
       nodejs: 10  
     commands:
-      - git clone https://github.com/anchore/anchore-engine
-      - cd anchore-engine
-      #- git clone https://github.com/anchore/anchore-cli
-      #- cd anchore-cli
-      - docker-compose up -d
-      - docker-compose ps
-      - pip install anchorecli
-      - anchore-cli --version
-      #- anchore-cli --debug system status
-      #- netstat -tulpn | grep LISTEN
+      - echo Installing Mocha...
+      - npm install -g mocha
       
   pre_build:
     commands:
       - echo Installing source NPM dependencies...
+      - npm install
+      - npm install unit.js
+      - npm install -g snyk
+      - snyk test 
+      - snyk monitor
+      - echo snyk test success
+      #- npm install -g sonarqube-scanner
+      #- mvn package sonar:sonar -Dsonar.host.url=$Host -Dsonar.login=$Login -Dsonar.login=$Username -Dsonar.password=$Password
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      - echo Configure Anchore Client...
-      - export ANCHORE_CLI_URL=http://localhost:8228/v1
-      #- export ANCHORE_CLI_PASS=foobar
-      #- export ANCHORE_CLI_USER=admin
-      - anchore-cli --url $ANCHORE_CLI_URL system status
-      - anchore-cli --u $ANCHORE_CLI_USER --p $ANCHORE_CLI_PASS image add openjdk:8-jre-alpine
-      - echo image added
-      #- REPOSITORY_URI=$TemplateURL
-      #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      #- IMAGE_TAG=${COMMIT_HASH:=latest}
+      - REPOSITORY_URI=$TemplateURL
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...          
-      #- docker build -t $REPOSITORY_URI:latest .
-      #- docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker images...   
-    
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:latest    
 artifacts:
   type: zip
   files:
