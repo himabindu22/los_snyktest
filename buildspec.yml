@@ -33,6 +33,7 @@ phases:
       - docker build -t $REPOSITORY_URI:latest .
       - npm install -g snyk
       - snyk test --docker $REPOSITORY_URI:latest --file=Dockerfile
+      - snyk config set disableSuggestions=true
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
   post_build:
     commands:
