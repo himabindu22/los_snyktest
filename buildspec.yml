@@ -30,7 +30,6 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image... 
-      - snyk test --file=Dockerfile
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
   post_build:
@@ -38,7 +37,9 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:latest  
+      - docker push $REPOSITORY_URI:latest 
+      - snyk test
+      - snyk monitor
       #- snyk monitor $REPOSITORY_URI:latest --file=Dockerfile
 artifacts:
   type: zip
