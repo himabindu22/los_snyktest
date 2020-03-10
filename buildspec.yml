@@ -18,8 +18,8 @@ phases:
       - snyk test 
       - snyk monitor
       - echo snyk test success
-      - npm install -g sonarqube-scanner
-      - mvn package sonar:sonar -Dsonar.host.url=$Host -Dsonar.login=$Login -Dsonar.login=$Username -Dsonar.password=$Password
+      #- npm install -g sonarqube-scanner
+      #- mvn package sonar:sonar -Dsonar.host.url=$Host -Dsonar.login=$Login -Dsonar.login=$Username -Dsonar.password=$Password
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
