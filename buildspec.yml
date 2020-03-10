@@ -37,7 +37,9 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:latest    
+      - docker push $REPOSITORY_URI:latest  
+      - snyk test --docker $REPOSITORY_URI:latest --file=Dockerfile
+      - snyk monitor --docker $REPOSITORY_URI:latest --file=Dockerfile
 artifacts:
   type: zip
   files:
