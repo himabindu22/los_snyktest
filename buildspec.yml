@@ -42,8 +42,9 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:latest 
       - snyk auth $SNYK_AUTH_TOKEN
-      - echo 'pwd'
+      - echo `pwd`
       - ls -ltr
+      - chmod 755 ./Dockerfile
       - snyk test --docker 202771655335.dkr.ecr.us-east-1.amazonaws.com/los-poc:latest --file=./Dockerfile
       #- snyk test --docker $REPOSITORY_URI:latest 
       - snyk monitor --docker $REPOSITORY_URI:latest 
