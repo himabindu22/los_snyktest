@@ -38,6 +38,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:latest 
+      - snyk auth
       - snyk test --docker $REPOSITORY_URI:latest 
       - snyk monitor --docker $REPOSITORY_URI:latest 
 artifacts:
