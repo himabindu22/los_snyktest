@@ -29,7 +29,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - echo Building the Docker image...          
+      - echo Building the Docker image... 
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
   post_build:
@@ -37,7 +37,17 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:latest    
+      - docker push $REPOSITORY_URI:latest 
+      #- snyk auth $SNYK_AUTH_TOKEN
+      #- echo `pwd`
+      #- ls -ltr
+      #- chmod 755 ./Dockerfile
+      #- ls -ltr
+      #- snyk test --show-vulnerable-paths=false
+      #- snyk test --docker 202771655335.dkr.ecr.us-east-1.amazonaws.com/los-poc:latest --dry-run
+      
+      #- snyk test --docker $REPOSITORY_URI:latest 
+      #- snyk monitor --docker $REPOSITORY_URI:latest 
 artifacts:
   type: zip
   files:
