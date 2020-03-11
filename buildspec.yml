@@ -46,8 +46,8 @@ phases:
       - ls -ltr
       - chmod 755 ./Dockerfile
       - ls -ltr
-      - snyk test --show-vulnerable-paths=false
-      - snyk test --docker 202771655335.dkr.ecr.us-east-1.amazonaws.com/los-poc:latest --file=./Dockerfile
+      #- snyk test --show-vulnerable-paths=false
+      - snyk test --docker 202771655335.dkr.ecr.us-east-1.amazonaws.com/los-poc:latest --file=./Dockerfile --show-vulnerable-paths=false
       
       #- snyk test --docker $REPOSITORY_URI:latest 
       #- snyk monitor --docker $REPOSITORY_URI:latest 
